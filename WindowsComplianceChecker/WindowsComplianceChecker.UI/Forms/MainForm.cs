@@ -62,13 +62,19 @@ namespace WindowsComplianceChecker.UI.Forms
             this.Controls.Add(_status);
             this.MainMenuStrip = _menuStrip;
 
-            // SplitterDistance 必須在控制項取得實際寬度後才能設定，
-            // 否則會因寬度不足而引發「必須介於 Panel1MinSize 和 Width-Panel2MinSize 之間」的例外。
+            // 在 Load 事件中設定 SplitContainer 的限制與分隔位置。
+            // 此時 Dock=Fill 的 Layout 已完成，_split.Width 已等於表單用戶端寬度，
+            // 可以安全地套用 Panel1MinSize / Panel2MinSize / SplitterDistance。
             this.Load += (s, e) =>
             {
-                int desired = 260;
-                int max = _split.Width - _split.Panel2MinSize - _split.SplitterWidth;
-                _split.SplitterDistance = Math.Max(_split.Panel1MinSize, Math.Min(desired, max));
+                _split.Panel1MinSize = 160;
+                _split.Panel2MinSize = 200;
+
+                int desired  = 260;
+                int available = _split.Width - _split.Panel2MinSize - _split.SplitterWidth;
+                // 確保值落在合法範圍，避免任何邊界情況
+                if (available > _split.Panel1MinSize)
+                    _split.SplitterDistance = Math.Min(desired, available);
             };
         }
 
@@ -137,11 +143,13 @@ namespace WindowsComplianceChecker.UI.Forms
 
         private void BuildSplitter()
         {
+            // Panel1MinSize / Panel2MinSize / SplitterDistance 不可在建構子中設定：
+            // 第一次建立 Handle 時 Dock=Fill 尚未完成 Layout，控制項寬度仍是預設值(~150px)，
+            // 此時 UpdateSplitter() 的範圍驗證必定失敗。
+            // 正確做法：在 Load 事件（Layout 已完成）後再套用。
             _split = new SplitContainer
             {
-                Dock          = DockStyle.Fill,
-                Panel1MinSize = 160,
-                Panel2MinSize = 400
+                Dock = DockStyle.Fill
             };
 
             // Left: Tree
