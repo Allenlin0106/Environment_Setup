@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>WindowsComplianceChecker</AssemblyName>
+    <RootNamespace>WindowsComplianceChecker.UI</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+    <StartupObject>WindowsComplianceChecker.UI.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WinForms & GDI+ -->
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsComplianceChecker.BLL\WindowsComplianceChecker.BLL.csproj" />
+    <ProjectReference Include="..\WindowsComplianceChecker.DAL\WindowsComplianceChecker.DAL.csproj" />
+    <ProjectReference Include="..\WindowsComplianceChecker.Contracts\WindowsComplianceChecker.Contracts.csproj" />
+  </ItemGroup>
+
+  <!--
+    設定檔複製到輸出目錄，讓程式啟動時可以讀取預設設定。
+    外掛 DLL 需手動（或透過建置指令碼）複製到輸出目錄的 Plugins 子目錄。
+  -->
+  <ItemGroup>
+    <None Include="..\config\compliance_config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>config\compliance_config.json</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

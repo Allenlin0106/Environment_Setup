@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>WindowsComplianceChecker.Plugins.GroupPolicy</AssemblyName>
+    <RootNamespace>WindowsComplianceChecker.Plugins.GroupPolicy</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+    <!--
+      外掛 DLL 的輸出目錄設為 UI 專案輸出目錄下的 Plugins 子目錄，
+      讓 PluginManager 可在執行期動態載入，實現 Plugin Architecture。
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsComplianceChecker.Contracts\WindowsComplianceChecker.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

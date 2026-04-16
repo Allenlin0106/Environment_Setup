@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>WindowsComplianceChecker.Plugins.Registry</AssemblyName>
+    <RootNamespace>WindowsComplianceChecker.Plugins.Registry</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Microsoft.Win32.Registry 在 .NET Framework 4.8 中為內建框架組件，無需 NuGet 套件 -->
+    <Reference Include="Microsoft.Win32.Registry" />
+    <ProjectReference Include="..\WindowsComplianceChecker.Contracts\WindowsComplianceChecker.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
