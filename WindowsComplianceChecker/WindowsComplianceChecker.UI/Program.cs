@@ -10,8 +10,7 @@ namespace WindowsComplianceChecker.UI
 {
     /// <summary>
     /// 應用程式進入點（Composition Root）。
-    /// 在此集中完成所有服務的建立與依賴注入容器的配置，
-    /// 各層的具體實作只在這裡被直接參考，其餘程式碼均透過介面互動。
+    /// 在此集中完成所有服務的建立與依賴注入容器的配置。
     /// </summary>
     static class Program
     {
@@ -29,7 +28,7 @@ namespace WindowsComplianceChecker.UI
         {
             var container = new ServiceContainer();
 
-            // ── DAL：設定服務 ──────────────────────────────────────────────────
+            // ── DAL ────────────────────────────────────────────────────────────
             var configPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "config",
@@ -41,8 +40,7 @@ namespace WindowsComplianceChecker.UI
             var pluginManager = new PluginManager();
             container.RegisterInstance<IPluginManager>(pluginManager);
 
-            // 初始載入外掛（後續每次執行 RunAllChecks 也會重新載入，支援熱插拔）
-            var config = configService.LoadConfiguration();
+            var config    = configService.LoadConfiguration();
             var pluginDir = Path.IsPathRooted(config.PluginDirectory)
                 ? config.PluginDirectory
                 : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, config.PluginDirectory);
@@ -52,8 +50,16 @@ namespace WindowsComplianceChecker.UI
             var checkService = new ComplianceCheckService(pluginManager, configService);
             container.RegisterInstance<IComplianceCheckService>(checkService);
 
-            // ── UI：主視窗（注入所需服務） ─────────────────────────────────────
-            var mainForm = new MainForm(checkService, configService, pluginManager);
+            // ── BLL：修復服務 ──────────────────────────────────────────────────
+            var remediationService = new RemediationService(pluginManager, configService);
+            container.RegisterInstance<IRemediationService>(remediationService);
+
+            // ── UI：主視窗 ─────────────────────────────────────────────────────
+            var mainForm = new MainForm(
+                checkService,
+                configService,
+                pluginManager,
+                remediationService);
             container.RegisterInstance(mainForm);
 
             return container;
