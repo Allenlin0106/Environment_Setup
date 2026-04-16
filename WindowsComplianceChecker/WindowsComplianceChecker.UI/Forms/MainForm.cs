@@ -61,6 +61,15 @@ namespace WindowsComplianceChecker.UI.Forms
             this.Controls.Add(_menuStrip);
             this.Controls.Add(_status);
             this.MainMenuStrip = _menuStrip;
+
+            // SplitterDistance 必須在控制項取得實際寬度後才能設定，
+            // 否則會因寬度不足而引發「必須介於 Panel1MinSize 和 Width-Panel2MinSize 之間」的例外。
+            this.Load += (s, e) =>
+            {
+                int desired = 260;
+                int max = _split.Width - _split.Panel2MinSize - _split.SplitterWidth;
+                _split.SplitterDistance = Math.Max(_split.Panel1MinSize, Math.Min(desired, max));
+            };
         }
 
         private void BuildMenu()
@@ -130,10 +139,9 @@ namespace WindowsComplianceChecker.UI.Forms
         {
             _split = new SplitContainer
             {
-                Dock              = DockStyle.Fill,
-                SplitterDistance  = 260,
-                Panel1MinSize     = 160,
-                Panel2MinSize     = 400
+                Dock          = DockStyle.Fill,
+                Panel1MinSize = 160,
+                Panel2MinSize = 400
             };
 
             // Left: Tree
