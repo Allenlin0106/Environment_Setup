@@ -1,0 +1,157 @@
+{
+  "PluginDirectory": "Plugins",
+  "CheckItems": [
+    {
+      "Id": "GP-001",
+      "Name": "最低密碼長度",
+      "Description": "確認本機安全性原則中最低密碼長度 >= 8 個字元",
+      "IsEnabled": true,
+      "PluginName": "GroupPolicyPlugin",
+      "Properties": {
+        "PolicySection": "System Access",
+        "PolicyName": "MinimumPasswordLength",
+        "ExpectedValue": "8",
+        "Operator": "GreaterThanOrEqual"
+      }
+    },
+    {
+      "Id": "GP-002",
+      "Name": "密碼最長使用期限",
+      "Description": "確認密碼最長使用期限 <= 90 天",
+      "IsEnabled": true,
+      "PluginName": "GroupPolicyPlugin",
+      "Properties": {
+        "PolicySection": "System Access",
+        "PolicyName": "MaximumPasswordAge",
+        "ExpectedValue": "90",
+        "Operator": "LessThanOrEqual"
+      }
+    },
+    {
+      "Id": "GP-003",
+      "Name": "帳戶鎖定閾值",
+      "Description": "確認連續登入失敗閾值 <= 5 次即鎖定",
+      "IsEnabled": true,
+      "PluginName": "GroupPolicyPlugin",
+      "Properties": {
+        "PolicySection": "System Access",
+        "PolicyName": "LockoutBadCount",
+        "ExpectedValue": "5",
+        "Operator": "LessThanOrEqual"
+      }
+    },
+    {
+      "Id": "GP-004",
+      "Name": "密碼歷程記錄",
+      "Description": "確認密碼歷程記錄至少保留 5 個",
+      "IsEnabled": true,
+      "PluginName": "GroupPolicyPlugin",
+      "Properties": {
+        "PolicySection": "System Access",
+        "PolicyName": "PasswordHistorySize",
+        "ExpectedValue": "5",
+        "Operator": "GreaterThanOrEqual"
+      }
+    },
+    {
+      "Id": "REG-001",
+      "Name": "Windows 防火牆（標準設定檔）啟用",
+      "Description": "確認 Windows Defender 防火牆已針對標準設定檔啟用（EnableFirewall=1）",
+      "IsEnabled": true,
+      "PluginName": "RegistryPlugin",
+      "Properties": {
+        "KeyPath": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\StandardProfile",
+        "ValueName": "EnableFirewall",
+        "ExpectedValue": "1",
+        "ValueType": "DWORD"
+      }
+    },
+    {
+      "Id": "REG-002",
+      "Name": "Windows 防火牆（網域設定檔）啟用",
+      "Description": "確認 Windows Defender 防火牆已針對網域設定檔啟用（EnableFirewall=1）",
+      "IsEnabled": true,
+      "PluginName": "RegistryPlugin",
+      "Properties": {
+        "KeyPath": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\DomainProfile",
+        "ValueName": "EnableFirewall",
+        "ExpectedValue": "1",
+        "ValueType": "DWORD"
+      }
+    },
+    {
+      "Id": "REG-003",
+      "Name": "UAC 啟用狀態",
+      "Description": "確認使用者帳戶控制 (UAC) 已開啟（EnableLUA=1）",
+      "IsEnabled": true,
+      "PluginName": "RegistryPlugin",
+      "Properties": {
+        "KeyPath": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+        "ValueName": "EnableLUA",
+        "ExpectedValue": "1",
+        "ValueType": "DWORD"
+      }
+    },
+    {
+      "Id": "REG-004",
+      "Name": "自動播放（AutoRun）停用",
+      "Description": "確認 AutoRun 已透過登錄檔停用（NoDriveTypeAutoRun=255）",
+      "IsEnabled": true,
+      "PluginName": "RegistryPlugin",
+      "Properties": {
+        "KeyPath": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+        "ValueName": "NoDriveTypeAutoRun",
+        "ExpectedValue": "255",
+        "ValueType": "DWORD"
+      }
+    },
+    {
+      "Id": "REG-005",
+      "Name": "遠端桌面加密層級",
+      "Description": "確認 RDP 加密層級設定為高 (MinEncryptionLevel=3)",
+      "IsEnabled": true,
+      "PluginName": "RegistryPlugin",
+      "Properties": {
+        "KeyPath": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\WinStations\\RDP-Tcp",
+        "ValueName": "MinEncryptionLevel",
+        "ExpectedValue": "3",
+        "ValueType": "DWORD"
+      }
+    },
+    {
+      "Id": "ACC-001",
+      "Name": "Guest 帳號已停用",
+      "Description": "確認內建 Guest 帳號存在但已停用",
+      "IsEnabled": true,
+      "PluginName": "LocalAccountPlugin",
+      "Properties": {
+        "Username": "Guest",
+        "ShouldExist": "true",
+        "ShouldBeEnabled": "false"
+      }
+    },
+    {
+      "Id": "ACC-002",
+      "Name": "Administrator 帳號存在",
+      "Description": "確認內建 Administrator 帳號存在",
+      "IsEnabled": true,
+      "PluginName": "LocalAccountPlugin",
+      "Properties": {
+        "Username": "Administrator",
+        "ShouldExist": "true"
+      }
+    },
+    {
+      "Id": "ACC-003",
+      "Name": "合規稽核帳號（AuditUser）",
+      "Description": "確認合規稽核專用帳號 AuditUser 已建立並啟用（預設停用，依實際環境調整）",
+      "IsEnabled": false,
+      "PluginName": "LocalAccountPlugin",
+      "Properties": {
+        "Username": "AuditUser",
+        "ShouldExist": "true",
+        "ShouldBeEnabled": "true"
+      }
+    }
+  ]
+}

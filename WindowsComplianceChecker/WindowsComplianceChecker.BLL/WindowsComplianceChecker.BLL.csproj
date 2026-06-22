@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>WindowsComplianceChecker.BLL</AssemblyName>
+    <RootNamespace>WindowsComplianceChecker.BLL</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsComplianceChecker.Contracts\WindowsComplianceChecker.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
